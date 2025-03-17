@@ -1,0 +1,53 @@
+What genres made the most profit? 
+
+Changed revenue and budget to data types to create calculations
+
+ALTER TABLE movies
+ALTER COLUMN revenue TYPE NUMERIC USING revenue::NUMERIC;
+
+ALTER TABLE movies
+ALTER COLUMN budget TYPE NUMERIC USING budget::NUMERIC;
+
+Remove null values and calculate profit
+
+SELECT genres, (revenue - budget) as profit 
+from movies 
+WHERE revenue IS NOT NULL and budget IS NOT NULL 
+ORDER BY profit DESC 
+
+| genres                                                 | profit     |
+| ------------------------------------------------------ | ---------- |
+| ['Action', 'Adventure', 'Fantasy', 'Science Fiction']  | 2686706026 |
+| ['Adventure', 'Science Fiction', 'Action']             | 2438731755 |
+| ['Drama', 'Romance']                                   | 2064162353 |
+| ['Science Fiction', 'Adventure', 'Action']             | 1860250281 |
+| ['Adventure', 'Action', 'Science Fiction']             | 1823223624 |
+| ['Adventure', 'Action', 'Science Fiction']             | 1752415039 |
+| ['Action', 'Adventure', 'Science Fiction']             | 1721847111 |
+| ['Action', 'Adventure', 'Science Fiction', 'Thriller'] | 1521537444 |
+| ['Adventure', 'Drama', 'Family', 'Animation']          | 1403075401 |
+| ['Action', 'Thriller', 'Crime']                        | 1325341399 |
+
+Of the top profitable genre, what movies were most profitable? 
+
+SELECT title,(revenue - budget) as profit 
+FROM movies
+WHERE genres ILIKE '%Action%' 
+  AND genres ILIKE '%Adventure%' 
+  AND genres ILIKE '%Fantasy%' 
+  AND genres ILIKE '%Science Fiction%'
+ORDER BY profit DESC 
+LIMIT 10
+
+| title                         | profit     |
+| ----------------------------- | ---------- |
+| Avatar                        | 2686706026 |
+| Thor: Ragnarok                | 675301806  |
+| X-Men: Apocalypse             | 365934787  |
+| Pokémon: Jirachi - Wish Maker | 334000000  |
+| Fantastic Four                | 233535934  |
+| Black Adam                    | 193252111  |
+| The Fifth Element             | 173920180  |
+| Pacific Rim: Uprising         | 140061297  |
+| Race to Witch Mountain        | 56303988   |
+| Dark Phoenix                  | 52442974   |
