@@ -79,3 +79,48 @@ ORDER BY profit DESC
 | Jurassic World               | 1521537444 |
 | The Lion King                | 1403075401 |
 | Furious 7                    | 1325341399 |
+
+What years had the highest average rating for movies? 
+
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_name = 'movies';
+
+| column_name          | data_type        |
+| -------------------- | ---------------- |
+| popularity           | double precision |
+| id                   | bigint           |
+| budget               | numeric          |
+| release_date         | date             |
+| revenue              | numeric          |
+| runtime              | bigint           |
+| vote_average         | double precision |
+| vote_count           | bigint           |
+| tagline              | text             |
+| title                | text             |
+| genres               | text             |
+| original_language    | text             |
+| overview             | text             |
+| production_companies | text             |
+| Number               | text             |
+
+SELECT EXTRACT(YEAR FROM release_date) AS year, 
+       ROUND(AVG(CAST(vote_average AS INT)),2) AS avg_vote
+FROM movies
+WHERE release_date IS NOT NULL
+GROUP BY year
+ORDER BY avg_vote DESC
+LIMIT 10
+
+| year | avg_vote |
+| ---- | -------- |
+| 1922 | 8.00     |
+| 1929 | 8.00     |
+| 1926 | 8.00     |
+| 1920 | 8.00     |
+| 1932 | 8.00     |
+| 1921 | 8.00     |
+| 1902 | 8.00     |
+| 1936 | 8.00     |
+| 1939 | 7.83     |
+| 1957 | 7.69     |
